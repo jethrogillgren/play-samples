@@ -1,7 +1,14 @@
 package controllers
 
 import javax.inject._
-import play.api._
+
+import models.MatchFilterType.MatchFilterType
+import models.MatchFilterType.matchFilterTypeFormat
+
+import models.SearchRequest
+
+import play.api.data.{Form, Forms}
+import play.api.data.Forms.{list, mapping, text, nonEmptyText}
 import play.api.mvc._
 
 /**
@@ -10,6 +17,16 @@ import play.api.mvc._
  */
 @Singleton
 class HomeController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
+
+
+  val searchForm: Form[SearchRequest] = Form(
+    mapping(
+      "mft" -> Forms.of[MatchFilterType](matchFilterTypeFormat),
+      "queryText" -> nonEmptyText,
+      "locations" -> list(text)
+    )(SearchRequest.apply)(SearchRequest.unapply)
+  )
+
 
   /**
    * Create an Action to render an HTML page.
