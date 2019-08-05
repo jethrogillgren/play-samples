@@ -1,15 +1,15 @@
 package controllers
 
 import javax.inject._
-
 import models.MatchFilterType.MatchFilterType
 import models.MatchFilterType.matchFilterTypeFormat
-
-import models.SearchRequest
-
+import models.{MatchFilterType, SearchRequest}
 import play.api.data.{Form, Forms}
-import play.api.data.Forms.{list, mapping, text, nonEmptyText}
+import play.api.data.Forms.{list, mapping, nonEmptyText, text}
+import play.api.libs.json.Json
 import play.api.mvc._
+
+import scala.concurrent.Future
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -27,24 +27,19 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     )(SearchRequest.apply)(SearchRequest.unapply)
   )
 
+  def getSearch = Action.async {
+    Future.successful( Ok(Json.toJson(SearchRequest(MatchFilterType.ONE, "test", List[String]() ))) )
+  }
+  def doSearch = Action.async { implicit request =>
+    searchForm.bindFromRequest.fold(
+      searchForm => {
+        Future.successful(BadRequest("nooo"))
+      },
+      search => {
+        Future.successful(Ok(Json.toJson(search)))
+      }
+    )
+  }
 
-  /**
-   * Create an Action to render an HTML page.
-   *
-   * The configuration in the `routes` file means that this method
-   * will be called when the application receives a `GET` request with
-   * a path of `/`.
-   */
-  def index() = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.index())
-  }
-  
-  def explore() = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.explore())
-  }
-  
-  def tutorial() = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.tutorial())
-  }
   
 }
