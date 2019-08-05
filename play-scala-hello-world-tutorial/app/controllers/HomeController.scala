@@ -28,7 +28,7 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
   )
 
   def getSearch = Action.async {
-    Future.successful( Ok(Json.toJson(SearchRequest(MatchFilterType.ONE, "test", List[String]() ))) )
+    Future.successful( Ok(Json.toJson(SearchRequest(MatchFilterType.gt, "test", List[String]() ))) )
   }
   def doSearch = Action.async { implicit request =>
     searchForm.bindFromRequest.fold(

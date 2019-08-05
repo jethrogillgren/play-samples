@@ -10,7 +10,9 @@ import play.api.data.format.Formatter
 
 object MatchFilterType extends Enumeration {
   type MatchFilterType = Value
-  val ONE /*1*/ , TWO /*2*/ , ETC /*n*/ = Value
+  val gt = Value("gt")
+  val lt = Value("lt")
+  val eq = Value("eq")
 
   implicit object MatchFilterTypeFormatter extends Formatter[MatchFilterType.Value] {
     override val format = Some(("format.enum", Nil))
