@@ -21,7 +21,7 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
 
   val searchForm: Form[SearchRequest] = Form(
     mapping(
-      "mft" -> Forms.of[MatchFilterType](matchFilterTypeFormat),
+      "mft" -> Forms.of[MatchFilterType],
       "queryText" -> nonEmptyText,
       "locations" -> list(text)
     )(SearchRequest.apply)(SearchRequest.unapply)
